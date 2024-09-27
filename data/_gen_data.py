@@ -21,7 +21,7 @@
 #    1. Add dataset description printing
 # --------------------------------------------------------------
 #    Description:
-#        Generate augmented data points in advance
+#        Get data from databases.
 # --------------------------------------------------------------
 # ==============================================================
 
