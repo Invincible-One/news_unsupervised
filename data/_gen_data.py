@@ -1,6 +1,33 @@
-# TODO: Add dataset description print for tuning hyperparameters like max_len.
+# ==============================================================
+#                      _            _             _      
+#                     /\ \         /\ \     _    /\ \    
+#                    /  \ \       /  \ \   /\_\ /  \ \   
+#                   / /\ \ \     / /\ \ \_/ / // /\ \ \  
+#                  / / /\ \ \   / / /\ \___/ // / /\ \_\ 
+#                 / / /  \ \_\ / / /  \/____// /_/_ \/_/ 
+#                / / /   / / // / /    / / // /____/\    
+#               / / /   / / // / /    / / // /\____\/    
+#              / / /___/ / // / /    / / // / /______    
+#             / / /____\/ // / /    / / // / /_______\   
+#             \/_________/ \/_/     \/_/ \/__________/   
+#                                          
+# --------------------------------------------------------------
+#                 Project: News Unsupervised
+#                 Author: ONE
+# --------------------------------------------------------------
+#                 FILE: ./data/_gen_data.py
+# --------------------------------------------------------------
+#                          TODOs:
+#    1. Add dataset description printing
+# --------------------------------------------------------------
+#    Description:
+#        Generate augmented data points in advance
+# --------------------------------------------------------------
+# ==============================================================
 
-# importing packages
+
+
+# packages & configurations
 import os
 import sys
 
@@ -10,9 +37,10 @@ import psycopg2
 from sqlalchemy import create_engine
 from urllib.parse import quote_plus
 
+from utils import hash_encoder
 
 
-# configuration
+
 _db_meta = {
     "HOST":"150.230.113.32",
     "PORT":"8899",
@@ -28,15 +56,14 @@ _db_meta = {
     },
 }
 
+
+
 root = "/scratch/ym2380/data/news"
 
 
 
 # get dataframe helper
 def get_df(db_name):
-    '''
-    WARNING: The function is not tested on rss_embedding table
-    '''
     assert db_name in _db_meta["DB_TABLES"], f"Don't recognise {db_name}!"
 
     encoded_password = quote_plus(_db_meta["PASSWORD"])
@@ -44,7 +71,8 @@ def get_df(db_name):
     engine = create_engine(db_url)
 
     dfs = list()
-    required_columns = ["title", "description", "key_infomation"]   ### COMMENT: Original table has the typo
+    #COMMNET: Original table has a typo.
+    required_columns = ["title", "description", "key_infomation"]
     for table_name in _db_meta["DB_TABLES"][db_name]:
         query = f"SELECT * FROM public.{table_name}"
         df = pd.read_sql(query, engine)
@@ -60,16 +88,9 @@ def get_df(db_name):
 
     df = pd.concat(dfs, ignore_index=True)
 
+    #COMMENT: add a column of hash identifiers
+    #WARNING: encoding the descriptions, not articles
+    df["hash_id"] = df["description"].apply(hash_encoder)
+    assert df["hash_id"].nunique() == len(df), "Error: Identical hash ids detected!"
 
-    '''
-    query = f"SELECT * FROM public.{_db_meta['DB_TABLES'][db_name]}"
-    
-    df = pd.read_sql(query, engine)
-
-    if db_name == "rss_embedding":
-        df.rename(columns={"publish_datetime": "datetime", "key_infomation": "key_information"}, inplace=True)
-        df.drop(columns=["id", "hash_code", "table_name", "origin_url", "embedding"], inplace=True)
-    '''
     return df
-
-
