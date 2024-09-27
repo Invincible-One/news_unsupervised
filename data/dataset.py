@@ -1,5 +1,36 @@
-# TODO: Ensure dataset is properly split.
+# ==============================================================
+#                      _            _             _      
+#                     /\ \         /\ \     _    /\ \    
+#                    /  \ \       /  \ \   /\_\ /  \ \   
+#                   / /\ \ \     / /\ \ \_/ / // /\ \ \  
+#                  / / /\ \ \   / / /\ \___/ // / /\ \_\ 
+#                 / / /  \ \_\ / / /  \/____// /_/_ \/_/ 
+#                / / /   / / // / /    / / // /____/\    
+#               / / /   / / // / /    / / // /\____\/    
+#              / / /___/ / // / /    / / // / /______    
+#             / / /____\/ // / /    / / // / /_______\   
+#             \/_________/ \/_/     \/_/ \/__________/   
+#                                          
+# --------------------------------------------------------------
+#                 Project: News Unsupervised
+#                 Author: ONE
+# --------------------------------------------------------------
+#                 FILE: ./pre_augment.py
+# --------------------------------------------------------------
+#                          TODOs:
+#    1. Split the dataset.
+#    2. Get articles in the database, instead of descriptions
+#    3. Current version is merely an example, actual implementa-
+#       tion requiring false news fetching and tuple pair items.
+# --------------------------------------------------------------
+#    Description:
+#        Dataset
+# --------------------------------------------------------------
+# ==============================================================
 
+
+
+# packages
 import os
 
 import pandas as pd
@@ -12,16 +43,19 @@ from data._gen_data import get_df
 
 
 
+# dataset
 class News(Dataset):
     csv_path = "/scratch/ym2380/data/news/news.csv"
-    article_column_name = "description"   ### TODO: This is not article
+    #WARNING: currently this column contains descriptions
+    article_column_name = "description"
     
     def __init__(self, tokenizer, max_length):
         if not os.path.exists(self.csv_path):
             self._download_csv()
         self.data = pd.read_csv(self.csv_path)
 
-        self.tokenizer = tokenizer   ### TODO: use pre-tokenization would be more efficient
+        #WARNING: using pre-tokenization would be more efficient
+        self.tokenizer = tokenizer
         self.max_length = max_length
 
     def __len__(self):
@@ -30,6 +64,7 @@ class News(Dataset):
     def __getitem__(self, idx):
         article = str(self.data[self.article_column_name][idx])
 
+        #WARNING: The tokenization part deserves double-checking, as I’m not very familiar with it.
         encoding = self.tokenizer.encode_plus(
                 article,
                 add_special_tokens=True,
