@@ -1,6 +1,6 @@
 # 🌟 Unsupervised News Representation Learning with Contrastive Learning 🌟
 
-Welcome to my **Natural Language Processing (NLP)** project! This repository focuses on learning news data **unsupervisedly**, with the goal of clustering news articles in a **semantic** way. We aim to produce meaningful representations where similar news items are grouped together.
+This repository focuses on learning news data **unsupervisedly**, with the goal of clustering news articles in a semantic way. We aim to produce meaningful representations where similar news items are grouped together.
 
 ## 🔍 Project Overview
 
