@@ -18,8 +18,4 @@ Here's how the project is organized:
 - **`./loss`**: ❌ Implementation of the loss functions, including contrastive loss.
 - **`./utils`**: 🔧 Logging and helpful utilities for smoother development.
 
-## 🙏 Let’s Make it Work
-
-This is an exciting journey into **unsupervised learning** and **contrastive learning**—one that I hope will yield powerful insights and results.
-
-Let's pray it works! 💪
+## 🙏 Let's pray it works!
