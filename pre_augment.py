@@ -28,9 +28,10 @@
 
 
 # packages
+import os
 import argparse
 
-import pandas
+import pandas as pd
 
 from transformers import pipeline
 
@@ -43,7 +44,7 @@ from utils import get_datetime_filename
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--task_option", default="text-generation")
-    parser.add_argument("--model_name", default="gpt-3.5-turbo")
+    #parser.add_argument("--model_name", default="gpt-3.5-turbo")
 
     parser.add_argument("--num_augmentations_per_news", type=int, default=6)
     parser.add_argument("--max_length_per_generated", type=int, default=512)
@@ -111,14 +112,15 @@ if __name__ == "__main__":
 
     #WARNING: not sure if the task option being "text-generation" is the best
     #WARNING: not sure having access to "gpt-3.5-turbo" in an unlimited way
-    generator = pipeline(args.task_option, model=args.model_name)
+    #WARNING: removed the specific model, not sure if we need this initially
+    generator = pipeline(args.task_option)
     #WARNING: This prompt is topic-based, but we can also use article-based prompts.
     #WARNING: Should finetune the prompt
-    prompt = f"Generate a news article based on this topic: {}"
+    prompt = "Generate a news article based on this topic: {}"
 
     csv_path = News.csv_path
     #WARNING: be mindful that this columns stores descriptions currently
-    prototype_column_name = News.article_column_name
+    prototype_column_name = "description"
 
     #WARNING: storing data in pd.DataFrame
     df = gen_batch_augmentations(

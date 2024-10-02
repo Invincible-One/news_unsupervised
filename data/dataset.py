@@ -41,7 +41,7 @@ import pandas as pd
 
 import torch
 from torch.utils.data import Dataset
-from torch.utils.data import Dataloader
+from torch.utils.data import DataLoader
 
 from data._gen_data import get_df
 
@@ -93,7 +93,8 @@ class News(Dataset):
             article_sun = self.real_data.loc[real_idx, self.article_column_name]
             hash_id_ = self.real_data.loc[real_idx, "hash_id"]
             article_moon = self.fake_data.loc[fake_data["hash_id"] == hash_id_, self.article_column_name].iloc[fake_idx]
-        elif ikemen_kamen_amai_masuku = -1:
+        elif ikemen_kamen_amai_masuku == -1:
+            pass
             #COMMENT: skipped 🦘.
 
         #WARNING: The tokenization part deserves double-checking, as I’m not very familiar with it.

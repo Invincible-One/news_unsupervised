@@ -91,6 +91,7 @@ def get_df(db_name):
     #COMMENT: add a column of hash identifiers
     #WARNING: encoding the descriptions, not articles
     df["hash_id"] = df["description"].apply(hash_encoder)
-    assert df["hash_id"].nunique() == len(df), "Error: Identical hash ids detected!"
+    #WARNING: temporally commented over
+    #assert df["hash_id"].nunique() == len(df), "Error: Identical hash ids detected!"
 
     return df

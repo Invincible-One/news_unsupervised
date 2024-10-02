@@ -25,4 +25,4 @@
 
 from data.dataset import News
 
-from data.utils import get_data, get_loader
+from data._utils import get_data, get_loader
